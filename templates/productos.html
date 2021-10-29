@@ -1,0 +1,12 @@
+{%extends "base.html"%}
+
+{%block contenido%}
+<h2 style="margin: auto; display:block; width:400px">productos</h2>
+
+{%for product in productos%}
+
+{%include "includes/productoInc.html" %}
+
+{%endfor%}
+
+{%endblock%}

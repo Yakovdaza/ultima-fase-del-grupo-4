@@ -1,0 +1,73 @@
+{%extends "base.html" %}
+
+    <!--fin del header-->
+    {%block contenido %}
+
+    {%include "includes/productoInc.html" %}
+
+    <!-- {% if g.rol == 1 %} -->
+    <!-- <div class="contacto" style="background: none;" action=""> -->
+        <!-- <input type="text" value="{{product[1]}}" id="nombre" style="display: none;"> -->
+        <!-- <select name="cantidad" id="cantidad"> -->
+            <!-- {%for i in range(1,30)%} -->
+            <!-- <option value="{{i}}">{{i}}</option> -->
+            <!-- {%endfor%} -->
+        <!-- </select> -->
+        <!--  -->
+    <!-- </div> -->
+    <!-- {%endif%} -->
+    
+    
+    <hr>
+    <aside class="producto">
+        <div class="relate-product" id="relate-product">
+            <h3>productos relacionados</h3><br>
+            <div class="relate-products"> 
+                {%for product in g.productos2 %}
+
+                    <div class="rel-pro">
+                        {% include "includes/prod-relacionado.html"%}
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+        <form class="comentarios" action="/producto/{{product[1]}}" method="post">
+            <div class="coment1" >  
+                <h3>Comentarios</h3><br>
+                <p>
+                    {%for coment in data%}
+                        <div> 
+                            {{coment.2}}
+                            <br>
+                            {{coment.4}}<label class="star star-c" for="radio1">★</label>
+                        </div>
+                    {%endfor%}
+                </p>
+            </div> 
+            <br>
+            <textarea class="coment" name="comentario" placeholder="Comenta aqui" id="cometario" cols="40" rows="5"></textarea>
+            <p class="clasificacion">
+                <input id="radio1" type="radio" name="estrellas" value="5">
+                <!--
+                --><label class="star" for="radio1">★</label>
+                <!--
+                --><input id="radio2" type="radio" name="estrellas" value="4">
+                <!--
+                --><label class="star" for="radio2">★</label>
+                <!--
+                --><input id="radio3" type="radio" name="estrellas" value="3">
+                <!--
+                --><label class="star" for="radio3">★</label>
+                <!--
+                --><input id="radio4" type="radio" name="estrellas" value="2">
+                <!--
+                --><label class="star" for="radio4">★</label>
+                <!--
+                --><input id="radio5" type="radio" name="estrellas" value="1">
+                <!--
+                --><label class="star" for="radio5">★</label>
+            </p>
+            <input class="entrar" type="submit" value="Comentar">
+        </form>
+    </aside>
+{% endblock %}

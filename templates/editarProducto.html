@@ -1,0 +1,21 @@
+{%extends "base.html" %}
+
+{%block contenido%} 
+<div class="producto" style="margin-left: 3rem;">
+    <form action="/ediproductos/{{producto[0]}}" method="POST" enctype="multipart/form-data" class="comentarios" >
+        <label for="nombre">Nombre</label>
+        <input class="form-inp" id="nombre"type="text" name="nombre" value="{{producto[1]}}">
+        <img src="{{producto[3]}}" style="width: 300px;" alt="{{producto[1]}}">
+        <label for="imagen">subir imagen</label>
+        <div class="entrar2">
+            <p>subir archivo</p>
+            <input  type="file" name="file" id="imagen" value="{{producto[3]}}">
+        </div>  
+        <label for="descipcion">descripcion</label>
+        <textarea  class="coment" name="descripcion" id="descripcion" cols="30" rows="10">{{producto[2]}}</textarea>
+        <br>
+        <button class="entrar" type="submit"><strong>Editar</strong></button>
+    </form>
+    <div class="fondo"></div>
+</div>
+{%endblock%}
