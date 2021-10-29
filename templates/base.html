@@ -7,42 +7,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet"/>
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/coment-box.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/product.css') }}">
     <!-- <script defer src="{{ url_for('static',filename='js/validar.js') }}"></script>-->
     <script defer src="{{ url_for('static',filename='js/bars.js') }}"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <title></title>
     <link rel="stylesheet" href="{{ url_for('static' , filename='css/mobile.css') }}">
+
 </head>
+
 <body>
-{%include "includes/menu-nav-bar.html" %},
-{%include "includes/messagge.html" %},
+    {%include "includes/messagge.html" %},
 
-<br>
-<main>
-    {%block contenido%}
-    
-    {%endblock%}
-
-    {%include "includes/carrito_de_compra.html" %},
-</main>
+    <br>
+    <main>
+        {%block contenido%} {%endblock%} {%include "includes/carrito_de_compra.html" %},
+    </main>
 
 
-{%include "includes/footer.html" %},
-<div class="fondo-car"></div>
+    {%include "includes/footer.html" %},
+    <div class="fondo-car"></div>
 
-
-        <!-- MDB -->
+    {%if 'username' in session %} {%include "includes/menu-nav-bar.html" %}, {% endif %}
+    <!-- MDB -->
     <script>
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"
+        type = "text/javascript"
+        src = "https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"
     </script>
-    <script defer  type="text/javascript" src="{{ url_for('static' , filename='js/carrito.js') }}"></script> 
-</body> 
+    <script defer type="text/javascript" src="{{ url_for('static' , filename='js/carrito.js') }}"></script>
+
+</body>
+
+</html>

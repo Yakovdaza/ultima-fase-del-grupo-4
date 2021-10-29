@@ -1,13 +1,16 @@
 from flask import Flask,g
 from db import close_db
 from routes.routes import *
+from flask import current_app
 import os
 
 
 app = Flask(__name__)
 app.config.from_mapping(
     SECRET_KEY="development"
+    
 )
+IS_DEV = app.env == 'development'
 UPLOAD_FOLDER = '/static/img/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
@@ -39,6 +42,13 @@ def logout():
     session.clear()
     return redirect("/login")
 
+@app.route('/set_cookie')
+def cookie_insertion():
+    redirect_to_index = redirect('/')
+    response = current_app.make_response(redirect_to_index )  
+    response.set_cookie('cookie_name',value='values')
+    return response
+
 @app.before_request
 def load_logged_in_user():
     username = session.get('username') #get es para devolver valores de un diccionario
@@ -54,11 +64,8 @@ def load_logged_in_user():
         db = get_db()
         g.productos2 = db.execute("SELECT * FROM producto").fetchall()
 
-
-
-
-
-
 if  __name__ == "__main__":
-    os.environ['FLASK_ENV'] = 'development'
     app.run(debug=True)
+    assert os.path.exists('.env')  # for other environment variables...
+    os.environ['FLASK_ENV'] = 'development'  # HARD CODE since default is production
+   
