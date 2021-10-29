@@ -22,18 +22,21 @@
     <link rel="stylesheet" href="{{ url_for('static' , filename='css/mobile.css') }}">
 </head>
 <body>
-    <main>
-    {%include "includes/menu-nav-bar.html" %}
-    {%include "includes/messagge.html" %}
-    
-    
+{%include "includes/menu-nav-bar.html" %},
+{%include "includes/messagge.html" %},
+
+<br>
+<main>
     {%block contenido%}
     
     {%endblock%}
 
-    </main>
+    {%include "includes/carrito_de_compra.html" %},
+</main>
 
-    {%include "includes/footer.html" %}
+
+{%include "includes/footer.html" %},
+<div class="fondo-car"></div>
 
 
         <!-- MDB -->

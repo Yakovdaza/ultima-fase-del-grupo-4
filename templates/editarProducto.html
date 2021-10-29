@@ -2,19 +2,26 @@
 
 {%block contenido%} 
 <div class="producto" style="margin-left: 3rem;">
-    <form action="/ediproductos/{{producto[0]}}" method="POST" enctype="multipart/form-data" class="comentarios" >
+    <form action="/crearproducto" method="POST" enctype="multipart/form-data" class="comentarios" >
         <label for="nombre">Nombre</label>
-        <input class="form-inp" id="nombre"type="text" name="nombre" value="{{producto[1]}}">
-        <img src="{{producto[3]}}" style="width: 300px;" alt="{{producto[1]}}">
+        <input class="form-inp" id="nombre"type="text" name="nombre" value="{{producto[3]}}">
+        <label for="codigo">Codigo</label>
+        <input class="form-inp" type="text" name="codigo"  value="{{producto[2]}}">
+        <label for="precio">PrecioVenta</label>
+        <input class="form-inp" type="text" name="precio" value="{{producto[4]}}">
+        <img src="{{producto[6]}}" alt="" style="width :250px;">
+
         <label for="imagen">subir imagen</label>
         <div class="entrar2">
             <p>subir archivo</p>
-            <input  type="file" name="file" id="imagen" value="{{producto[3]}}">
+            <input  type="file" name="file" id="imagen">
         </div>  
         <label for="descipcion">descripcion</label>
-        <textarea  class="coment" name="descripcion" id="descripcion" cols="30" rows="10">{{producto[2]}}</textarea>
+        <textarea  class="coment" name="descripcion" id="descripcion" cols="30" rows="10" value="{{producto[5]}}"></textarea>
+        <label for="estado">Estado</label>
+        <input class="form-inp" type="text" name="estado" value="{{producto[7]}}">
         <br>
-        <button class="entrar" type="submit"><strong>Editar</strong></button>
+        <button class="entrar" type="submit"><strong>crear</strong></button>
     </form>
     <div class="fondo"></div>
 </div>

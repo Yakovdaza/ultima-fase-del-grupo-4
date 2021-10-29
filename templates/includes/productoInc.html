@@ -2,25 +2,26 @@
 
 <main class="producto">
     <div class="main-product" id="main-product">
-        <a href="/producto/{{product[1]}}"><img class="img" src="{{product[3]}}" alt="cafecito"></a>
+        <a href="/producto/{{product[3]}}"><img class="img" src="{{product[6]}}" alt="cafecito"></a>
     </div>
     <div class="comentarios">
-        <h2 class="titulo" calss="shopCarElmTitle" > {{product[1]}} </h2>
+        <h2 class="titulo" calss="shopCarElmTitle" > {{product[3]}} </h2>
         <p class="descripcion">
-            {{product[2]}}
+            {{product[5]}}
         </p>
         <p class="precio">
-        
+            {{product[4]}}
         </p>
+
         {% if g.rol == 1%}
-        <form action="delproductos/{{product[1]}}" method="post"></form>
+        <p> {{product[7]}}</p>
+        <form action="/delproducto/{{product[3]}}" method="post">
             <button class="entrar"><a  style="color:aliceblue " href="/ediproductos/{{product[0]}}">Editar</a></button>
-            <button class="entrar" type="submit">Eliminar</button>
+            <button class="entrar" type="submit"> Eliminar</button>
         </form>
         {%endif%}
-        {% if g.rol == 3 or g.rol ==1 %}
+        {% if g.rol == 3  %}<!--or g.rol ==1-->
         <button class="entrar" type="buttom" id="addcar" >add To Car </button>
         {%endif%}
-        <div class="shopCarRow"></div>
     </div>
 </main>

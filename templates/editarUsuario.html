@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+{%block contenido %}
+<div class="producto" style="margin-left: 3rem;">
+    <form action="{{usuario[0]}}" method="POST" enctype="multipart/form-data" class="comentarios" >      
+        
+        <label for="nombre">Nombre</label>
+        <input  class="form-inp"type="text" name="nombre" value="{{usuario[1]}}">
+        <label for="correo">Nombre</label>
+        <input  class="form-inp"type="text" name="correo" value="{{usuario[2]}}">
+        <label for="telefono">Nombre</label>
+        <input  class="form-inp"type="text" name="telefono" value="{{usuario[3]}}">
+        <label for="fecha">Nombre</label>
+        <input  class="form-inp"type="date" name="fecha" value="{{usuario[5]}}">
+        <label for="tipoUsuario">Nombre</label>
+        <select class="form-inp"  name="tipoUsuario"  value="{{usuario[6]}}" >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        <button type="submit" class="entrar">editar</button>
+
+    </form>
+    <div class="fondo"></div>
+</div>
+
+
+
+{%endblock%}

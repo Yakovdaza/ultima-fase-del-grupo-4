@@ -13,6 +13,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 class indexController(MethodView):
     def get(self):
         if "username" in session:
+            print(g.rol)
             return render_template("index.html")
         else:
             return redirect("/login")
@@ -25,7 +26,7 @@ class productosController(MethodView):
     def get(self):
         if "username" in session:
             db = get_db()
-            producto = db.execute("SELECT* FROM productos")
+            producto = db.execute("SELECT* FROM producto")
             g.productos = producto.fetchall()
             return render_template("productos.html",productos= g.productos)
         else:
@@ -37,7 +38,7 @@ class productController(MethodView):
         if "username" in session:
             db = get_db()
             comentarios = db.execute("SELECT * FROM comentarios WHERE producto =?",(name,))
-            producto = db.execute("SELECT* FROM productos WHERE nombre=?",(name,)).fetchone()
+            producto = db.execute("SELECT* FROM producto WHERE nombre=?",(name,)).fetchone()
             g.producto = producto
             g.data = comentarios.fetchall()
             return render_template("producto.html", data= g.data,product= g.producto)
@@ -45,27 +46,63 @@ class productController(MethodView):
             return redirect ("/login")
     def post(self,name):
         try:
-                user = session.get("username")
+                userid = g.user[0]
                 comentario = request.form["comentario"]
                 calificacion=request.form["estrellas"]
                 db= get_db()
-                db.execute('INSERT INTO comentarios(username,comentario,producto,calificacion) VALUES(?,?,?,?)',(user,comentario,name,calificacion))
+                db.execute('INSERT INTO comentarios(idUsuario,comentario,producto,calificacion) VALUES(?,?,?,?)',(userid,comentario,name,calificacion))
                 db.commit()
                 return redirect(name)        
         except:
             flash("no se guardo el comentario","error")
             return redirect(name) 
 class eliminarProductoController(MethodView):
+    def post(self,id_producto):
+        db= get_db()
+        db.execute('DELETE FROM producto WHERE idProducto=?', (id_producto,))
+        db.commit()
+        return redirect("/productos")
+
+class eliminarUsuarioController(MethodView):
     def post(self,name):
         db= get_db()
-        db.execute('DELETE FROM producto WHERE nombre=?', (name,))
+        db.execute('DELETE FROM ususario WHERE nombre=?', (name,))
         db.commit()
+        return redirect("/registrarAdmin")
+        
+class editarUsuarioController(MethodView):
+    def get(self,id):
+        
+        if g.rol==1:
+            db= get_db()
+            usuario= db.execute('SELECT * FROM usuario WHERE idUsuario=?',(id,)).fetchone()
+            
+            return render_template("editarUsuario.html",usuario=usuario)
+        
+        else:
+            return redirect("/registarAdmin")
+        
+        
+    def post(self,id):
+        
+        nombre = request.form["nombre"]
+        correo = request.form["correo"]
+        telefono = request.form["telefono"]
+        date = request.form["fecha"]
+        rol=request.form["tipoUsuario"]
+        
+        db= get_db()
+        db.execute (
+            'UPDATE usuario SET nombre=?,correo=?,telefono=?,fechaNacimiento=?,TipoUsuario=? WHERE idUsuario=?',(nombre,correo,telefono,date,rol,id)
+            )
+        db.commit()
+        flash("producto creado","success")
+        return redirect("/registrarAdmin") 
         
 class editarProductoController(MethodView):
     def get(self,id_producto):
-        
         db= get_db()
-        edProduct=db.execute('SELECT* FROM productos WHERE prod_id=?', (id_producto,)).fetchone()
+        edProduct=db.execute('SELECT* FROM producto WHERE idProducto=?', (id_producto,)).fetchone()
         db.commit()
         return render_template("editarProducto.html",producto=edProduct)
     
@@ -77,11 +114,14 @@ class editarProductoController(MethodView):
             return render_template("crearProducto.html")
         file = request.files["file"]
         nombre = request.form["nombre"]
+        price= request.form["precio"]
+        status=request.form["estado"]
+        code =request.form["codigo"]
         descripcion = request.form["descripcion"]
         if file.filename=="":
             db= get_db()
             db.execute (
-                'UPDATE productos SET prod_id=?,nombre=?,descripcion=? WHERE prod_id=? ',(id,nombre,descripcion,id)
+                'UPDATE producto SET idProducto=?,nombre=?,descripcion=? WHERE idProducto=? ',(id,nombre,descripcion,id)
                 )
             db.commit()
             flash("producto creado","success")
@@ -93,7 +133,7 @@ class editarProductoController(MethodView):
             filename1 =".." +UPLOAD_FOLDER + filename
             db= get_db()
             db.execute (
-                'UPDATE productos SET prod_id=?,nombre=?,descripcion=?, filename=? WHERE prod_id=? ',(id,nombre,descripcion,filename1,id)
+                'UPDATE producto SET idProducto=?,nombre=?,descripcion=?,imagen=? precioVenta=? esatdo=? codigo=? WHERE idProducto=? ',(id,nombre,descripcion,filename1,price,status,code,id)
                 )
             db.commit()
             flash("producto creado","success")
@@ -117,7 +157,7 @@ class registerController(MethodView):
             contraseña =request.form["contraseña"]
             date = request.form["date"]
             db= get_db()
-            db.execute('INSERT INTO Usuario_final(nombre,correo,telefono,contrasena,fecha,rol_id) VALUES(?,?,?,?,?,?)',(nombre,correo,telefono,generate_password_hash(contraseña),date,3))
+            db.execute('INSERT INTO usuario(nombre,correo,telefono,contrasena,fechaNacimiento,TipoUsuario) VALUES(?,?,?,?,?,?)',(nombre,correo,telefono,generate_password_hash(contraseña),date,3))
             db.commit()
             flash("la informacion se ingresado con exito","success")
             return redirect("/")
@@ -130,7 +170,10 @@ class registerADController(MethodView):
     def get(self):
         
         if "username" in session:
-            return render_template("crearUsuario.html")
+            user = get_db().execute( 
+            'SELECT * FROM usuario').fetchall()
+            
+            return render_template("crearUsuario.html",user=user)
         else:
             return redirect("/")
 
@@ -143,13 +186,13 @@ class registerADController(MethodView):
             contraseña =request.form["contraseña"]
             date = request.form["date"]
             db= get_db()
-            db.execute('INSERT INTO Usuario_final(nombre,correo,telefono,contrasena,fecha,rol_id) VALUES(?,?,?,?,?,?)',(nombre,correo,telefono,generate_password_hash(contraseña),date,1))
+            db.execute('INSERT INTO usuario(nombre,correo,telefono,contrasena,fechaNacimiento,idTipoUsuario)',(nombre,correo,telefono,generate_password_hash(contraseña),date,1))
             db.commit()
             flash("la informacion se ingresado con exito","success")
             return redirect('/registrarAdmin')
         except:
             flash("un error ha ocurrido ","error")
-            return render_template("registrarse.html")
+            return redirect('/registrarAdmin')
         
 class loginController(MethodView):
     def get(self):
@@ -164,7 +207,7 @@ class loginController(MethodView):
             contraseña = request.form["password"]
             db= get_db()
             user = db.execute(
-                "SELECT * FROM Usuario_final WHERE correo=?",(correo,)
+                "SELECT * FROM usuario WHERE correo=?",(correo,)
                 ).fetchone()
             
             dbpass = user[4]
@@ -215,6 +258,9 @@ class crearProductoController(MethodView):
                 file = request.files["file"]
                 nombre = request.form["nombre"]
                 descripcion = request.form["descripcion"]
+                price= request.form["precio"]
+                status=request.form["estado"]
+                code =request.form["codigo"]
                 if file.filename=="":
                     flash("no hay archivo correcto","error")
                     return render_template("crearProducto.html")
@@ -225,7 +271,7 @@ class crearProductoController(MethodView):
                     filename1 =".." +UPLOAD_FOLDER + filename
                     db= get_db()
                     db.execute (
-                        'INSERT INTO productos(nombre,descripcion,filename) VALUES(?,?,?)',(nombre,descripcion,filename1)
+                        'INSERT INTO producto(nombre,descripcion,imagen,precioVenta,estado,codigo) VALUES(?,?,?,?,?,?)',(nombre,descripcion,filename1,price,status,code)
                         )
                     db.commit()
                     flash("producto creado","success")

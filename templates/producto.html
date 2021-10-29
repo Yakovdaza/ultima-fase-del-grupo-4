@@ -26,12 +26,13 @@
                 {%for product in g.productos2 %}
 
                     <div class="rel-pro">
+
                         {% include "includes/prod-relacionado.html"%}
                     </div>
                 {%endfor%}
             </div>
         </div>
-        <form class="comentarios" action="/producto/{{product[1]}}" method="post">
+        <form class="comentarios" action="/producto/{{product[3]}}" method="post">
             <div class="coment1" >  
                 <h3>Comentarios</h3><br>
                 <p>
@@ -39,7 +40,7 @@
                         <div> 
                             {{coment.2}}
                             <br>
-                            {{coment.4}}<label class="star star-c" for="radio1">★</label>
+                            {{coment.3}}<label class="star star-c" for="radio1">★</label>
                         </div>
                     {%endfor%}
                 </p>

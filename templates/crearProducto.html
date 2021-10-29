@@ -4,6 +4,11 @@
     <form action="/crearproducto" method="POST" enctype="multipart/form-data" class="comentarios" >
         <label for="nombre">Nombre</label>
         <input class="form-inp" id="nombre"type="text" name="nombre">
+        <label for="codigo">Codigo</label>
+        <input class="form-inp" type="text" name="codigo">
+        <label for="precio">PrecioVenta</label>
+        <input class="form-inp" type="text" name="precio">
+        
         <label for="imagen">subir imagen</label>
         <div class="entrar2">
             <p>subir archivo</p>
@@ -11,6 +16,8 @@
         </div>  
         <label for="descipcion">descripcion</label>
         <textarea  class="coment" name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
+        <label for="estado">Estado</label>
+        <input class="form-inp" type="text" name="estado">
         <br>
         <button class="entrar" type="submit"><strong>crear</strong></button>
     </form>

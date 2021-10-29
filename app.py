@@ -13,17 +13,22 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 #rutas de la aplicacion
-app.add_url_rule(routes["ind_rut"], view_func=routes["ind_cont"])
-app.add_url_rule(routes["log_rut"], view_func=routes["log_cont"])
+# rutas sin log in
 app.add_url_rule(routes["reg_rut"], view_func=routes["reg_cont"])
-app.add_url_rule(routes["regAd_rut"], view_func=routes["regAd_cont"])
-app.add_url_rule(routes["pro_rut"], view_func=routes["pro_cont"])
+app.add_url_rule(routes["log_rut"], view_func=routes["log_cont"])
+app.add_url_rule(routes["con_rut"], view_func=routes["con_cont"])
+# rutas usuarios logeados
+app.add_url_rule(routes["ind_rut"], view_func=routes["ind_cont"])
 app.add_url_rule(routes["pros_rut"], view_func=routes["pros_cont"])
+app.add_url_rule(routes["edituser_rut"], view_func=routes["edituser_cont"])
+app.add_url_rule(routes["deluser_rut"], view_func=routes["deluser_cont"])
+app.add_url_rule(routes["pro_rut"], view_func=routes["pro_cont"])
+app.add_url_rule(routes["car_rut"], view_func=routes["car_cont"])
+# rutas para admionistradores
+app.add_url_rule(routes["creaPro_rut"], view_func=routes["creaPro_cont"])
 app.add_url_rule(routes["edipro_rut"], view_func=routes["edipro_cont"])
 app.add_url_rule(routes["delpro_rut"], view_func=routes["delpro_cont"])
-app.add_url_rule(routes["con_rut"], view_func=routes["con_cont"])
-app.add_url_rule(routes["car_rut"], view_func=routes["car_cont"])
-app.add_url_rule(routes["creaPro_rut"], view_func=routes["creaPro_cont"])
+app.add_url_rule(routes["regAd_rut"], view_func=routes["regAd_cont"])
 
 #ruta del 404
 app.register_error_handler(routes['notFound_route'],routes['not_found_cont'])
@@ -43,11 +48,11 @@ def load_logged_in_user():
         #print('g.user : ',g.user)
     else: #trae una tupla
         g.user = get_db().execute( 
-            'SELECT * FROM Usuario_final WHERE nombre= ?',(username,)
+            'SELECT * FROM usuario WHERE nombre= ?',(username,)
         ).fetchone()
-        g.rol = g.user[6]
+        g.rol = g.user[7]
         db = get_db()
-        g.productos2 = db.execute("SELECT* FROM productos").fetchall()
+        g.productos2 = db.execute("SELECT * FROM producto").fetchall()
 
 
 

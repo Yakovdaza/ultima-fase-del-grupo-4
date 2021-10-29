@@ -5,7 +5,7 @@ import sqlite3
 def get_db():
     try: 
         if "db" not in g:
-            g.db=sqlite3.connect('database.db')
+            g.db=sqlite3.connect('Base de Datos Dunn Brothers Coffee.s3db')
             g.db.row_factory = sqlite3.Row
         return g.db
     except Error:
